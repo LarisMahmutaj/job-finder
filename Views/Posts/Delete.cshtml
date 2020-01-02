@@ -1,0 +1,23 @@
+﻿@model JobFinder.Models.Post
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h3>Delete post?</h3>
+
+<div class="card my-5">
+    <div class="card-header text-primary">
+        <h5>@@@(Model.User.Username)</h5>
+    </div>
+    <div class="card-body">
+        <div class="text-muted mb-2" style="font-size:0.8rem">@(Model.DatePosted.ToString("dd MMM yyyy H:mm"))</div>
+        <h5 class="card-title text-info font-weight-bold">@(Model.Title)</h5>
+        <p class="card-text">@(Model.Content)</p>
+    </div>
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Cancel</a>
+    <button type="submit" value="Delete" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</button>
+</form>

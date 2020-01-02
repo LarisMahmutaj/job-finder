@@ -1,0 +1,25 @@
+﻿@model IEnumerable<JobFinder.Models.Post>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container w-75">
+    <a href="@Url.Action("Create")" class="btn btn-primary mt-3"><i class="fas fa-pen"></i> Create Post</a>
+    @foreach (var post in Model.Reverse()) {
+        <div class="card my-5">
+            <div class="card-header text-primary">
+                <h5>@@@Html.DisplayFor(modelItem => post.User.Username)</h5>
+                <a asp-action="Delete" asp-route-id="@post.Id" class="text-danger text-decoration-none">Delete</a>
+            </div>
+            <div class="card-body">
+                <div class="text-muted mb-2" style="font-size:0.8rem">@post.DatePosted.ToString("dd MMM yyyy H:mm")</div>
+                <h5 class="card-title text-info font-weight-bold">@Html.DisplayFor(modelItem => post.Title)</h5>
+                <p class="card-text">@Html.DisplayFor(modelItem => post.Content)</p>
+            </div>
+            <div class="card-footer">
+                <a class="text-info text-decoration-none font-weight-bold" href="#">Save <i class="fas fa-plus"></i></a>
+            </div>
+        </div>
+    }
+</div>
+

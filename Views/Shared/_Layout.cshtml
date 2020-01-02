@@ -10,8 +10,8 @@
     <script src="https://kit.fontawesome.com/5cbd45029c.js" crossorigin="anonymous"></script>
     <script src="~/lib/jquery/dist/jquery.js"></script>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<body style="background-color:#EEEEEE">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" asp-action="Index">Job Finder</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -19,13 +19,16 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" asp-action="Index">Home</a>
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" asp-action="About">About</a>
+                    <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" asp-action="Contact">Contact</a>
+                    <a class="nav-link" asp-controller="Home" asp-action="Contact">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="Index" asp-controller="Posts">Posts</a>
                 </li>
             </ul>
         </div>
