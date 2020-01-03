@@ -1,13 +1,12 @@
 ﻿@model JobFinder.Models.Post
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h2>Create Post</h2>
+<h2>Edit</h2>
 
-<form asp-action="Create">
+<form asp-action="Edit">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Id" />
     <div class="form-group">
         <input class="form-control" type="text" asp-for="Title" placeholder="Post Title" />
         <span asp-validation-for="Title"></span>
@@ -31,10 +30,8 @@
     </div>
     <div class="form-group">
         <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Cancel</a>
-        <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Create Post</button>
+        <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Save Post</button>
     </div>
 
 </form>
-
-
 
