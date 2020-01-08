@@ -30,9 +30,16 @@ namespace JobFinder {
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddDbContext<JobFinderDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+               options.UseSqlServer(
+                   Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

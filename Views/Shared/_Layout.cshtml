@@ -30,6 +30,9 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-action="Index" asp-controller="Posts">Posts</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="LandingPage" asp-controller="LandingPage">Landing Page</a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -37,5 +40,6 @@
         @RenderBody()
     </div>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
