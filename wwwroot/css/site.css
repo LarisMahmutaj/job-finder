@@ -11,6 +11,18 @@ body {
     padding-left: 15px;
     padding-right: 15px;
 }
+#landing-container{
+    display:flex;
+    margin:auto;
+    height: 100%;
+    width: 100%;
+    align-items:center;
+}
+#landing-container img {
+    width: 800px;
+    padding-left: 120px;
+    padding-top: 50px;
+}
 
 /* Carousel */
 .carousel-caption p {

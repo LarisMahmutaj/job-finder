@@ -23,10 +23,7 @@ namespace JobFinder.Controllers {
 
             return View();
         }
-        public IActionResult LandingPage()
-        {
-            ViewData["Message"] = "Your application description page.";
-
+        public IActionResult LandingPage(){
             return View();
         }
 
