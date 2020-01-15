@@ -4,12 +4,16 @@
 }
 
 <div class="container w-75">
-    <a href="@Url.Action("Create")" class="btn btn-outline-primary mt-3"><i class="fas fa-pen"></i> Create Post</a>
+
+    <a href="@Url.Action("Create")" class="btn btn-outline-primary mt-3"><i class="fas fa-pen"></i> Create Post</a>    
+
     @foreach (var post in Model.Reverse()) {
-        <div class="card my-5 @(post.PostType == PostType.Offer? "border-warning" : "border-info")">    
-            <div class="card-header text-primary @(post.PostType == PostType.Offer? "border-warning" : "border-info")" 
+        <div class="card my-5 @(post.PostType == PostType.Offer? "border-warning" : "border-info")">
+            <div class="card-header text-primary @(post.PostType == PostType.Offer? "border-warning" : "border-info")"
                  style="display:flex; justify-content:space-between">
-                <h5>@@@Html.DisplayFor(modelItem => post.User.Username)</h5>
+
+                <h5>@@@Html.DisplayFor(modelItem => post.User.UserName)</h5>
+                
                 <div>
                     <a asp-action="Edit" asp-route-id="@post.Id" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Edit</a>
                     <a asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>

@@ -7,13 +7,23 @@ using Microsoft.AspNetCore.Mvc;
 using JobFinder.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using JobFinder.Data;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace JobFinder.Controllers {
     public class PostsController : Controller {
         private readonly JobFinderDbContext _context;
+        private readonly ApplicationDbContext _usersContext;
 
-        public PostsController(JobFinderDbContext context) {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public PostsController(JobFinderDbContext context, IHttpContextAccessor httpContextAccessor, ApplicationDbContext usersContext) {
             _context = context;
+            _usersContext = usersContext;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> Index() {
@@ -21,24 +31,30 @@ namespace JobFinder.Controllers {
             return View(await jobFinderDbContext.ToListAsync());
         }
 
+        [Authorize]
         public IActionResult Create() {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Username");
+            ViewData["UserId"] = new SelectList(_usersContext.Users, "Id", "UserName");
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Post post) {
             post.DatePosted = DateTime.Now;
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = await _usersContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            post.User = user;
+
             if (ModelState.IsValid) {
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Username", post.UserId);
             return View(post);
         }
 
+        [Authorize]
         public async Task<IActionResult> Edit(int? id) {
             if(id == null) {
                 return NotFound();
@@ -48,10 +64,10 @@ namespace JobFinder.Controllers {
             if(post == null) {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Username", post.UserId);
             return View(post);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Post post) {
@@ -72,10 +88,10 @@ namespace JobFinder.Controllers {
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Username", post.UserId);
             return View(post);
         }
 
+        [Authorize]
         public async Task<IActionResult> Delete(int? id) {
             if(id == null) {
                 return NotFound();
@@ -89,6 +105,7 @@ namespace JobFinder.Controllers {
             return View(post);
         }
 
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConfirmDelete(int id) {

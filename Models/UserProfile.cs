@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,6 +20,6 @@ namespace JobFinder.Models {
         public string City { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public IdentityUser User { get; set; }
     }
 }
