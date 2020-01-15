@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using JobFinder.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace JobFinder.Data
@@ -12,6 +13,7 @@ namespace JobFinder.Data
         {
 
         }
-    
+        public DbSet<Post> Posts { get; set; }
+
     }
 }

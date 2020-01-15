@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JobFinder.Data;
 using JobFinder.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,9 @@ namespace JobFinder.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly JobFinderDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public UsersController(JobFinderDbContext context) {
+        public UsersController(ApplicationDbContext context) {
             _context = context;
         }
         public IActionResult Index()

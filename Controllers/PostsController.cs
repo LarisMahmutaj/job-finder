@@ -15,14 +15,12 @@ using Microsoft.AspNetCore.Identity;
 
 namespace JobFinder.Controllers {
     public class PostsController : Controller {
-        private readonly JobFinderDbContext _context;
-        private readonly ApplicationDbContext _usersContext;
 
+        private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public PostsController(JobFinderDbContext context, IHttpContextAccessor httpContextAccessor, ApplicationDbContext usersContext) {
+        public PostsController(IHttpContextAccessor httpContextAccessor, ApplicationDbContext context) {
             _context = context;
-            _usersContext = usersContext;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -33,7 +31,7 @@ namespace JobFinder.Controllers {
 
         [Authorize]
         public IActionResult Create() {
-            ViewData["UserId"] = new SelectList(_usersContext.Users, "Id", "UserName");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName");
             return View();
         }
 
@@ -43,7 +41,7 @@ namespace JobFinder.Controllers {
         public async Task<IActionResult> Create(Post post) {
             post.DatePosted = DateTime.Now;
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = await _usersContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             post.User = user;
 
             if (ModelState.IsValid) {
@@ -74,6 +72,9 @@ namespace JobFinder.Controllers {
             if(id != post.Id) {
                 return NotFound();
             }
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            post.User = user;
 
             if (ModelState.IsValid) {
                 try {
