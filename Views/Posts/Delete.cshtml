@@ -7,7 +7,7 @@
 
 <div class="card my-5">
     <div class="card-header text-primary">
-        <h5>@@@(Model.User.UserName)</h5>
+        <h5>@@@Html.DisplayFor(Model => Model.User.UserName)</h5>
     </div>
     <div class="card-body">
         <div class="text-muted mb-2" style="font-size:0.8rem">@(Model.DatePosted.ToString("dd MMM yyyy H:mm"))</div>

@@ -24,8 +24,9 @@
                 <h5 class="card-title text-primary font-weight-bold">@Html.DisplayFor(modelItem => post.Title)</h5>
                 <p class="card-text">@Html.DisplayFor(modelItem => post.Content)</p>
             </div>
-            <div class="card-footer @(post.PostType == PostType.Offer? "border-warning" : "border-info")">
+            <div class="card-footer d-flex justify-content-between @(post.PostType == PostType.Offer? "border-warning" : "border-info")">
                 <a class="text-info text-decoration-none font-weight-bold" href="#">Save <i class="fas fa-plus"></i></a>
+                <p class="card-text font-weight-bold @(post.PostType == PostType.Offer? "text-warning" : "text-info")">@post.PostType</p>
             </div>
         </div>
     }
