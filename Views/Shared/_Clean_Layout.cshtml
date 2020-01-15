@@ -1,5 +1,4 @@
 ﻿<!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -10,11 +9,12 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
 </head>
 <body style="background-color: #1adbb5; padding:0">
-    <div>
+    <div id="clean-layout">
         @RenderBody()
     </div>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
             crossorigin="anonymous"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

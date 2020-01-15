@@ -11,6 +11,26 @@ body {
     padding-left: 15px;
     padding-right: 15px;
 }
+
+.login-page, .register-page{
+    display:flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#login-img, #register-img{
+    width: 500px;
+    margin-left: 100px;
+}
+#clean-layout{
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    height: 100vh;
+}
+
 #landing-container{
     display:flex;
     margin:auto;
