@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "~/Views/Shared/_Clean_Layout.cshtml";
+    ViewData["Title"] = "LandingPage";
+}
+
+<div id="landing-container">
+    <img src="~/images/landing-page-bg.svg" alt="" />
+    <div class="">
+        <h1>Welcome to Job Finder</h1>
+        <p>Find a job with just a few simple steps. Register now! </p>
+        <div>
+            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary mr-2">Register</a>
+            <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary">Login</a>
+        </div>
+    </div>
+</div>
