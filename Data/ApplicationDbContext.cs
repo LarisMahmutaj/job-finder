@@ -15,5 +15,6 @@ namespace JobFinder.Data
         }
         public DbSet<Post> Posts { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<SavedPost> SavedPosts { get; set; }
     }
 }
