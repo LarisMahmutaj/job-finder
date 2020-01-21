@@ -1,25 +1,19 @@
 ﻿@model IEnumerable<JobFinder.Models.Post>
 @using Microsoft.AspNetCore.Identity
-
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "MyPosts";
     var savedPosts = (List<SavedPost>)ViewData["SavedPosts"];
 }
+@inject UserManager<IdentityUser> UserManager
 
 <div class="container w-75">
-
-    <a href="@Url.Action("Create")" class="btn btn-success mt-3"><i class="fas fa-pen"></i> Create Post</a>
-
     @foreach (var post in Model.Reverse()) {
         <div class="card my-5 @(post.PostType == PostType.Offer? "border-warning" : "border-info")">
             <div class="card-header text-primary @(post.PostType == PostType.Offer? "border-warning" : "border-info")"
                  style="display:flex; justify-content:space-between">
 
                 <h5>@@@Html.DisplayFor(modelItem => post.User.UserName)</h5>
-                @if (SignInManager.IsSignedIn(User)) {
+                @if (post.UserId == UserManager.GetUserId(User)) {
                     <div class="dropdown">
                         <a class="text-dark"
                            type="button"
@@ -28,21 +22,11 @@
                            aria-haspopup="true"
                            aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            @{ 
-                                var sp = savedPosts.Where(x => x.UserId == UserManager.GetUserId(User) && x.PostId == post.Id).FirstOrDefault();
-                                if (sp != null) {
-                                    <a class="dropdown-item dropdown-item-text" asp-action="UnsavePost" asp-route-id="@post.Id"><i class="fas fa-minus"></i> Unsave</a>
-                                } else {
-                                    <a class="dropdown-item dropdown-item-text" asp-action="SavePost" asp-route-id="@post.Id"><i class="fas fa-plus"></i> Save</a>
-                                }
-                            }
-                            @if (post.UserId == UserManager.GetUserId(User)) {
-                                <div class="dropdown-divider"></div>
-                                <a asp-action="Edit" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-edit"></i> Edit</a>
-                                <a asp-action="Delete" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-trash"></i> Delete</a>
-                            }
+                            <a asp-action="Edit" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-edit"></i> Edit</a>
+                            <a asp-action="Delete" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-trash"></i> Delete</a>
                         </div>
                     </div>
+
                 }
             </div>
             <div class="card-body">
@@ -51,10 +35,8 @@
                 <p class="card-text">@Html.DisplayFor(modelItem => post.Content)</p>
             </div>
             <div class="card-footer py-1 d-flex justify-content-between @(post.PostType == PostType.Offer? "border-warning" : "border-info")">
-                <p class="card-text m-0 font-weight-bold @(post.PostType == PostType.Offer? "text-warning" : "text-info")">@post.PostType</p>
-                
+                <p class="card-text m-0 font-weight-bold @(post.PostType == PostType.Offer? "text-warning" : "text-info")">@post.PostType</p>              
             </div>
         </div>
     }
 </div>
-

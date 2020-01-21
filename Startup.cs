@@ -62,6 +62,10 @@ namespace JobFinder {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Posts}/{action=Index}/{id?}");
+                routes.MapRoute(
+                    name: "Login",
+                    template: "Identity/Account/Login"
+                    );
             });
         }
     }

@@ -19,7 +19,6 @@ namespace JobFinder.Controllers {
 
         private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly SignInManager<IdentityUser> SignInManager;
 
         public PostsController(IHttpContextAccessor httpContextAccessor, ApplicationDbContext context) {
             _context = context;
@@ -128,6 +127,15 @@ namespace JobFinder.Controllers {
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> MyPosts() {
+
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var posts = _context.Posts.Where(x => x.UserId == userId).Include(p => p.User);
+            ViewData["SavedPosts"] = await _context.SavedPosts.Include(p => p.Post).ToListAsync();
+            return View(await posts.ToListAsync());
         }
 
         [Authorize]

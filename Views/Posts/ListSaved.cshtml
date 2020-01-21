@@ -14,23 +14,16 @@
             <div class="card-header text-primary @(savedPost.Post.PostType == PostType.Offer ? "border-warning" : "border-info")"
                  style="display:flex; justify-content:space-between">
 
-                <h5>@@@(savedPost.Post.User.UserName)</h5>
-
-                @if (savedPost.UserId == UserManager.GetUserId(User)) {
-                    <div class="dropdown">
-                        <a class="text-dark"
-                           type="button"
-                           id="dropdownMenuButton"
-                           data-toggle="dropdown"
-                           aria-haspopup="true"
-                           aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a asp-action="Edit" asp-route-id="@savedPost.PostId" class="dropdown-item text-info bg-white"><i class="fas fa-edit"></i> Edit</a>
-                            <a asp-action="Delete" asp-route-id="@savedPost.PostId" class="dropdown-item text-danger bg-white"><i class="fas fa-trash"></i> Delete</a>
-                        </div>
-                    </div>
-
-                }
+                <h5>@@@(savedPost.Post.User.UserName)</h5>           
+                <a class="text-secondary text-decoration-none font-weight-bold" 
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   title="Unsave"
+                   asp-action="UnsavePost" 
+                   asp-route-id="@savedPost.PostId"
+                   >
+                    <i class="fas fa-times"></i>
+                </a>
             </div>
             <div class="card-body">
                 <div class="text-muted mb-2" style="font-size:0.8rem">@savedPost.Post.DatePosted.ToString("dd MMM yyyy H:mm")</div>
@@ -38,8 +31,7 @@
                 <p class="card-text">@Html.DisplayFor(modelItem => savedPost.Post.Content)</p>
             </div>
             <div class="card-footer py-1 d-flex justify-content-between @(savedPost.Post.PostType == PostType.Offer ? "border-warning" : "border-info")">
-                <p class="card-text m-0 font-weight-bold @(savedPost.Post.PostType == PostType.Offer ? "text-warning" : "text-info")">@savedPost.Post.PostType</p>
-                <a class="text-secondary text-decoration-none font-weight-bold" asp-action="UnsavePost" asp-route-id="@savedPost.PostId">Unsave <i class="fas fa-minus"></i></a>
+                <p class="card-text m-0 font-weight-bold @(savedPost.Post.PostType == PostType.Offer ? "text-warning" : "text-info")">@savedPost.Post.PostType</p>             
             </div>
         </div>
         }
