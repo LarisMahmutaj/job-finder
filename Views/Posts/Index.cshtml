@@ -11,7 +11,7 @@
 
 <div class="container w-75">
 
-    <a href="@Url.Action("Create")" class="btn btn-outline-primary mt-3"><i class="fas fa-pen"></i> Create Post</a>
+    <a href="@Url.Action("Create")" class="btn btn-success mt-3"><i class="fas fa-pen"></i> Create Post</a>
 
     @foreach (var post in Model.Reverse()) {
         <div class="card my-5 @(post.PostType == PostType.Offer? "border-warning" : "border-info")">
@@ -19,11 +19,21 @@
                  style="display:flex; justify-content:space-between">
 
                 <h5>@@@Html.DisplayFor(modelItem => post.User.UserName)</h5>
-
-                <div>
-                    <a asp-action="Edit" asp-route-id="@post.Id" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Edit</a>
-                    <a asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
-                </div>
+                @if(post.UserId == UserManager.GetUserId(User)) {
+                    <div class="dropdown">
+                        <a class="text-dark" 
+                           type="button"
+                           id="dropdownMenuButton" 
+                           data-toggle="dropdown" 
+                           aria-haspopup="true" 
+                           aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a asp-action="Edit" asp-route-id="@post.Id" class="dropdown-item text-info bg-white"><i class="fas fa-edit"></i> Edit</a>
+                            <a asp-action="Delete" asp-route-id="@post.Id" class="dropdown-item text-danger bg-white"><i class="fas fa-trash"></i> Delete</a>
+                        </div>
+                    </div>     
+                    
+                }
             </div>
             <div class="card-body">
                 <div class="text-muted mb-2" style="font-size:0.8rem">@post.DatePosted.ToString("dd MMM yyyy H:mm")</div>
@@ -35,9 +45,9 @@
                 @if (SignInManager.IsSignedIn(User)) {
                     var sp = savedPosts.Where(x=> x.UserId == UserManager.GetUserId(User) && x.PostId == post.Id).FirstOrDefault();
                     if (sp != null) {
-                        <a class="text-secondary text-decoration-none font-weight-bold" asp-action="UnsavePost" asp-route-id="@post.Id">Unsave <i class="fas fa-minus"></i></a>
+                        <a class="text-dark text-decoration-none font-weight-bold" asp-action="UnsavePost" asp-route-id="@post.Id">Unsave <i class="fas fa-minus"></i></a>
                     } else {
-                        <a class="text-info text-decoration-none font-weight-bold" asp-action="SavePost" asp-route-id="@post.Id">Save <i class="fas fa-plus"></i></a>
+                        <a class="text-success text-decoration-none font-weight-bold" asp-action="SavePost" asp-route-id="@post.Id">Save <i class="fas fa-plus"></i></a>
                     }
                 }
             </div>

@@ -12,8 +12,7 @@ using JobFinder.Data;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
-
-
+using System.Net;
 
 namespace JobFinder.Controllers {
     public class PostsController : Controller {
@@ -63,10 +62,14 @@ namespace JobFinder.Controllers {
             if (id == null) {
                 return NotFound();
             }
-
             var post = await _context.Posts.FindAsync(id);
-            if(post == null) {
+                if (post == null) {
                 return NotFound();
+            }
+            
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (post.UserId != userId){
+                return Forbid();
             }
             return View(post);
         }
@@ -107,6 +110,11 @@ namespace JobFinder.Controllers {
             var post = await _context.Posts.Include(p => p.User).FirstOrDefaultAsync(x => x.Id == id);
             if(post == null) {
                 return NotFound();
+            }
+
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (post.UserId != userId) {
+                return Forbid();
             }
 
             return View(post);
