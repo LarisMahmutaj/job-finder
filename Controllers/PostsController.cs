@@ -13,24 +13,30 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 
+
+
 namespace JobFinder.Controllers {
     public class PostsController : Controller {
 
         private readonly ApplicationDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly SignInManager<IdentityUser> SignInManager;
 
         public PostsController(IHttpContextAccessor httpContextAccessor, ApplicationDbContext context) {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IActionResult> Index() {
-            var jobFinderDbContext = _context.Posts.Include(p => p.User);
-            return View(await jobFinderDbContext.ToListAsync());
+        public async Task<IActionResult> Index() {         
+            ViewData["SavedPosts"] = await _context.SavedPosts.Include(p => p.Post).ToListAsync();
+
+            var appContext = _context.Posts.Include(p => p.User);
+            return View(await appContext.ToListAsync());
         }
 
         [Authorize]
         public IActionResult Create() {
+
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName");
             return View();
         }
@@ -54,7 +60,7 @@ namespace JobFinder.Controllers {
 
         [Authorize]
         public async Task<IActionResult> Edit(int? id) {
-            if(id == null) {
+            if (id == null) {
                 return NotFound();
             }
 
@@ -114,6 +120,62 @@ namespace JobFinder.Controllers {
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> ListSaved() {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            var posts = _context.SavedPosts.Where(x => x.User == user).Include(p => p.Post).ThenInclude(p => p.User);
+            return View(await posts.ToListAsync());
+        }
+
+        [Authorize]
+        public async Task<IActionResult> SavePost(int? id) {
+            if(id == null) {
+                return NotFound();
+            }
+
+            var post = await _context.Posts.Include(p => p.User).FirstOrDefaultAsync(x => x.Id == id);
+
+            if(post == null) {
+                return NotFound();
+            }
+
+            SavedPost savedPost = new SavedPost();
+
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            savedPost.User = user;
+            savedPost.Post = post;
+
+
+            _context.SavedPosts.Add(savedPost);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> UnsavePost(int? id) {
+            if (id == null) {
+                return NotFound();
+            }
+
+            var savedPosts = await _context.SavedPosts.Include(p => p.Post).ToListAsync();
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var savedPost = savedPosts.Where(x => x.PostId == id).Where(x => x.UserId == userId).First();
+        
+            if (savedPost == null) {
+                return NotFound();
+            }
+
+            _context.SavedPosts.Remove(savedPost);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(ListSaved));
         }
 
         private bool PostExists(int id) {
