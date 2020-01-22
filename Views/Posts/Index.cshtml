@@ -9,13 +9,13 @@
     var savedPosts = (List<SavedPost>)ViewData["SavedPosts"];
 }
 
-<div class="container w-75">
+<div class="container w-100">
 
     <a href="@Url.Action("Create")" class="btn btn-outline-primary mt-3"><i class="fas fa-pen"></i> Create Post</a>
 
     <ul class="nav nav-tabs mt-3">
         <li class="nav-item">
-            <a class="nav-link active" asp-action="Index">All Posts</a>
+            <a class="nav-link active font-weight-bold" asp-action="Index">All Posts</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" asp-action="Offers">Offers</a>
@@ -34,21 +34,21 @@
 
         </div>
     }
-
+<div class="px-4 d-flex flex-column align-items-center" style="overflow-y:auto; max-height: 550px">
     @foreach (var post in Model.Reverse()) {
-        <div class="card my-5 @(post.PostType == PostType.Offer? "border-warning" : "border-success")">
+        <div class="card w-75 my-4 @(post.PostType == PostType.Offer? "border-warning" : "border-success")">
             <div class="card-header text-primary @(post.PostType == PostType.Offer? "border-warning" : "border-success")"
-                    style="display:flex; justify-content:space-between">
+                 style="display:flex; justify-content:space-between">
 
                 <h5>@@@Html.DisplayFor(modelItem => post.User.UserName)</h5>
                 @if (SignInManager.IsSignedIn(User)) {
                     <div class="dropdown">
                         <a class="text-dark"
-                            type="button"
-                            id="dropdownMenuButton"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
+                           type="button"
+                           id="dropdownMenuButton"
+                           data-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             @{
                                 var sp = savedPosts.Where(x => x.UserId == UserManager.GetUserId(User) && x.PostId == post.Id).FirstOrDefault();
@@ -78,5 +78,6 @@
             </div>
         </div>
     }
+</div>
 </div>
 
