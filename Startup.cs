@@ -66,6 +66,11 @@ namespace JobFinder {
                     name: "Login",
                     template: "Identity/Account/Login"
                     );
+                routes.MapRoute(
+                    name: "Posts",
+                    template: "Posts/Index"
+                    );
+
             });
         }
     }
