@@ -61,7 +61,7 @@ namespace JobFinder {
             app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Posts}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=LandingPage}/{id?}");
                 routes.MapRoute(
                     name: "Login",
                     template: "Identity/Account/Login"

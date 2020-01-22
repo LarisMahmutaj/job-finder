@@ -5,7 +5,7 @@
 @inject UserManager<IdentityUser> UserManager
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Offers";
     var savedPosts = (List<SavedPost>)ViewData["SavedPosts"];
 }
 
@@ -15,40 +15,40 @@
 
     <ul class="nav nav-tabs mt-3">
         <li class="nav-item">
-            <a class="nav-link active" asp-action="Index">All Posts</a>
+            <a class="nav-link" asp-action="Index">All Posts</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-action="Offers">Offers</a>
+            <a class="nav-link active" asp-action="Offers">Offers</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" asp-action="Requests">Requests</a>
         </li>
     </ul>
+    
 
-    @if (Model.Count() == 0) {
+    @if(Model.Count() == 0) {
         <div class="my-5 d-flex justify-content-around">
             <div class="d-flex flex-column justify-content-center align-content-center">
-                <img src="~/images/no-posts.svg" style="width: 450px" />
+                <img src="~/images/no-posts.svg" style="width: 450px"/>
                 <h4 class="text-center mt-3 font-weight-bold" style="color:#444053">There are no posts to show.</h4>
             </div>
 
         </div>
     }
-
     @foreach (var post in Model.Reverse()) {
         <div class="card my-5 @(post.PostType == PostType.Offer? "border-warning" : "border-success")">
             <div class="card-header text-primary @(post.PostType == PostType.Offer? "border-warning" : "border-success")"
-                    style="display:flex; justify-content:space-between">
+                 style="display:flex; justify-content:space-between">
 
                 <h5>@@@Html.DisplayFor(modelItem => post.User.UserName)</h5>
                 @if (SignInManager.IsSignedIn(User)) {
                     <div class="dropdown">
                         <a class="text-dark"
-                            type="button"
-                            id="dropdownMenuButton"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
+                           type="button"
+                           id="dropdownMenuButton"
+                           data-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             @{
                                 var sp = savedPosts.Where(x => x.UserId == UserManager.GetUserId(User) && x.PostId == post.Id).FirstOrDefault();

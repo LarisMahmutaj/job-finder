@@ -32,6 +32,20 @@ namespace JobFinder.Controllers {
             return View(await appContext.ToListAsync());
         }
 
+        public async Task<IActionResult> Offers() {
+            ViewData["SavedPosts"] = await _context.SavedPosts.Include(p => p.Post).ToListAsync();
+
+            var appContext = _context.Posts.Include(p => p.User).Where(p => p.PostType == PostType.Offer);
+            return View(await appContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> Requests() {
+            ViewData["SavedPosts"] = await _context.SavedPosts.Include(p => p.Post).ToListAsync();
+
+            var appContext = _context.Posts.Include(p => p.User).Where(p => p.PostType == PostType.Request);
+            return View(await appContext.ToListAsync());
+        }
+
         [Authorize]
         public IActionResult Create() {
 

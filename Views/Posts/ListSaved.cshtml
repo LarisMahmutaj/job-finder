@@ -10,8 +10,8 @@
 <div class="container w-75">
     @foreach (var savedPost in Model.Reverse()) {
         if (savedPost.UserId == UserManager.GetUserId(User)) {
-        <div class="card my-5 @(savedPost.Post.PostType == PostType.Offer ? "border-warning" : "border-info")">
-            <div class="card-header text-primary @(savedPost.Post.PostType == PostType.Offer ? "border-warning" : "border-info")"
+        <div class="card my-5 @(savedPost.Post.PostType == PostType.Offer ? "border-warning" : "border-success")">
+            <div class="card-header text-primary @(savedPost.Post.PostType == PostType.Offer ? "border-warning" : "border-success")"
                  style="display:flex; justify-content:space-between">
 
                 <h5>@@@(savedPost.Post.User.UserName)</h5>           
@@ -30,8 +30,8 @@
                 <h5 class="card-title text-primary font-weight-bold">@Html.DisplayFor(modelItem => savedPost.Post.Title)</h5>
                 <p class="card-text">@Html.DisplayFor(modelItem => savedPost.Post.Content)</p>
             </div>
-            <div class="card-footer py-1 d-flex justify-content-between @(savedPost.Post.PostType == PostType.Offer ? "border-warning" : "border-info")">
-                <p class="card-text m-0 font-weight-bold @(savedPost.Post.PostType == PostType.Offer ? "text-warning" : "text-info")">@savedPost.Post.PostType</p>             
+            <div class="card-footer py-1 d-flex justify-content-between @(savedPost.Post.PostType == PostType.Offer ? "border-warning" : "border-success")">
+                <p class="card-text m-0 font-weight-bold @(savedPost.Post.PostType == PostType.Offer ? "text-warning" : "text-success")">@savedPost.Post.PostType</p>             
             </div>
         </div>
         }
