@@ -89,7 +89,7 @@ namespace JobFinder.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Username or password incorrect.");
                     return Page();
                 }
             }

@@ -44,6 +44,14 @@ body {
     padding-top: 50px;
 }
 
+.validation-errors ul{
+    padding-left: 0;
+}
+
+.validation-errors ul, li{
+    list-style-type:none;
+}
+
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;

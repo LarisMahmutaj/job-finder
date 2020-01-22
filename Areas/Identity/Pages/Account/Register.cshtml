@@ -7,24 +7,25 @@
 
 
 <div class="register-page">
-    <form asp-route-returnUrl="@Model.ReturnUrl" method="post" class="card p-5 w-25" >
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post" class="card p-5 w-25">
         <h3 class="card-title">Register</h3>
         <div class="form-group">
-            <input asp-for="Input.UserName" class="form-control" placeholder="Username"/>
-            <span asp-validation-for="Input.UserName" class="text-danger"></span>
+            <input asp-for="Input.UserName" class="form-control" placeholder="Username" />
+
         </div>
         <div class="form-group">
-            <input asp-for="Input.Email" class="form-control" placeholder="Email"/>
-            <span asp-validation-for="Input.Email" class="text-danger"></span>
+            <input asp-for="Input.Email" class="form-control" placeholder="Email" />
+
         </div>
         <div class="form-group">
             <input asp-for="Input.Password" class="form-control" placeholder="Password" />
-            <span asp-validation-for="Input.Password" class="text-danger"></span>
+
         </div>
         <div class="form-group">
             <input asp-for="Input.ConfirmPassword" placeholder="Confirm Password" class="form-control" />
-            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+
         </div>
+        <div asp-validation-summary="All" class="validation-errors text-danger py-0"></div>
         <div class="form-group">
             <button type="submit" class="btn btn-outline-success btn-block">Register</button>
         </div>
