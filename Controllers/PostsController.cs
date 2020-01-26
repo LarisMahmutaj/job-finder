@@ -25,25 +25,35 @@ namespace JobFinder.Controllers {
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IActionResult> Index() {         
+        public async Task<IActionResult> Index(int? pageIndex) {         
             ViewData["SavedPosts"] = await _context.SavedPosts.Include(p => p.Post).ToListAsync();
 
-            var appContext = _context.Posts.Include(p => p.User);
-            return View(await appContext.ToListAsync());
+            var posts = await _context.Posts.Include(p => p.User).ToListAsync();
+            posts.Reverse();
+
+            PaginatedList<Post> paginatedPosts = PaginatedList<Post>.Create(posts, pageIndex ?? 1, 5);
+
+            return View(paginatedPosts);
         }
 
-        public async Task<IActionResult> Offers() {
+        public async Task<IActionResult> Offers(int? pageIndex) {
             ViewData["SavedPosts"] = await _context.SavedPosts.Include(p => p.Post).ToListAsync();
 
-            var appContext = _context.Posts.Include(p => p.User).Where(p => p.PostType == PostType.Offer);
-            return View(await appContext.ToListAsync());
+            var posts = await _context.Posts.Include(p => p.User).Where(p => p.PostType == PostType.Offer).ToListAsync();
+            posts.Reverse();
+
+            PaginatedList<Post> paginatedPosts = PaginatedList<Post>.Create(posts, pageIndex ?? 1, 5);
+            return View(paginatedPosts);
         }
 
-        public async Task<IActionResult> Requests() {
+        public async Task<IActionResult> Requests(int? pageIndex) {
             ViewData["SavedPosts"] = await _context.SavedPosts.Include(p => p.Post).ToListAsync();
 
-            var appContext = _context.Posts.Include(p => p.User).Where(p => p.PostType == PostType.Request);
-            return View(await appContext.ToListAsync());
+            var posts = await _context.Posts.Include(p => p.User).Where(p => p.PostType == PostType.Request).ToListAsync();
+            posts.Reverse();
+
+            PaginatedList<Post> paginatedPosts = PaginatedList<Post>.Create(posts, pageIndex ?? 1, 5);
+            return View(paginatedPosts);
         }
 
         [Authorize]
@@ -143,22 +153,28 @@ namespace JobFinder.Controllers {
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> MyPosts() {
+        public async Task<IActionResult> MyPosts(int? pageIndex) {
 
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var posts = _context.Posts.Where(x => x.UserId == userId).Include(p => p.User);
             ViewData["SavedPosts"] = await _context.SavedPosts.Include(p => p.Post).ToListAsync();
-            return View(await posts.ToListAsync());
+
+            var posts = await _context.Posts.Where(x => x.UserId == userId).Include(p => p.User).ToListAsync();
+            posts.Reverse();
+            PaginatedList<Post> paginatedPosts = PaginatedList<Post>.Create(posts, pageIndex ?? 1, 5);
+            return View(paginatedPosts);
         }
 
         [Authorize]
-        public async Task<IActionResult> ListSaved() {
+        public async Task<IActionResult> ListSaved(int? pageIndex) {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-            var posts = _context.SavedPosts.Where(x => x.User == user).Include(p => p.Post).ThenInclude(p => p.User);
-            return View(await posts.ToListAsync());
+            var posts = await _context.SavedPosts.Where(x => x.User == user).Include(p => p.Post).ThenInclude(p => p.User).ToListAsync();
+            posts.Reverse();
+
+            PaginatedList<SavedPost> paginatedPosts = PaginatedList<SavedPost>.Create(posts, pageIndex ?? 1, 5);
+            return View(paginatedPosts);
         }
 
         [Authorize]
