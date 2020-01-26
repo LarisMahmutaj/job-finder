@@ -1,4 +1,4 @@
-﻿@model IEnumerable<JobFinder.Models.Post>
+﻿@model PaginatedList<JobFinder.Models.Post>
 @using Microsoft.AspNetCore.Identity
 @{
     ViewData["Title"] = "MyPosts";
@@ -6,37 +6,54 @@
 }
 @inject UserManager<IdentityUser> UserManager
 
-<div class="container w-75">
-    @foreach (var post in Model.Reverse()) {
-        <div class="card my-5 @(post.PostType == PostType.Offer? "border-warning" : "border-success")">
-            <div class="card-header text-primary @(post.PostType == PostType.Offer? "border-warning" : "border-success")"
-                 style="display:flex; justify-content:space-between">
+    <div class="container w-100 d-flex flex-column align-items-center">
+        @foreach (var post in Model) {
+            <div class="card w-75 my-5 @(post.PostType == PostType.Offer? "border-warning" : "border-success")">
+                <div class="card-header text-primary @(post.PostType == PostType.Offer? "border-warning" : "border-success")"
+                     style="display:flex; justify-content:space-between">
 
-                <h5>@@@Html.DisplayFor(modelItem => post.User.UserName)</h5>
-                @if (post.UserId == UserManager.GetUserId(User)) {
-                    <div class="dropdown">
-                        <a class="text-dark"
-                           type="button"
-                           id="dropdownMenuButton"
-                           data-toggle="dropdown"
-                           aria-haspopup="true"
-                           aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a asp-action="Edit" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-edit"></i> Edit</a>
-                            <a asp-action="Delete" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-trash"></i> Delete</a>
+                    <h5>@@@Html.DisplayFor(modelItem => post.User.UserName)</h5>
+                    @if (post.UserId == UserManager.GetUserId(User)) {
+                        <div class="dropdown">
+                            <a class="text-dark"
+                               type="button"
+                               id="dropdownMenuButton"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a asp-action="Edit" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-edit"></i> Edit</a>
+                                <a asp-action="Delete" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-trash"></i> Delete</a>
+                            </div>
                         </div>
-                    </div>
 
-                }
+                    }
+                </div>
+                <div class="card-body">
+                    <div class="text-muted mb-2" style="font-size:0.8rem">@post.DatePosted.ToString("dd MMM yyyy H:mm")</div>
+                    <h5 class="card-title text-primary font-weight-bold">@Html.DisplayFor(modelItem => post.Title)</h5>
+                    <p class="card-text">@Html.DisplayFor(modelItem => post.Content)</p>
+                </div>
+                <div class="card-footer py-1 d-flex justify-content-between @(post.PostType == PostType.Offer? "border-warning" : "border-success")">
+                    <p class="card-text m-0 font-weight-bold @(post.PostType == PostType.Offer? "text-warning" : "text-success")">@post.PostType</p>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="text-muted mb-2" style="font-size:0.8rem">@post.DatePosted.ToString("dd MMM yyyy H:mm")</div>
-                <h5 class="card-title text-primary font-weight-bold">@Html.DisplayFor(modelItem => post.Title)</h5>
-                <p class="card-text">@Html.DisplayFor(modelItem => post.Content)</p>
-            </div>
-            <div class="card-footer py-1 d-flex justify-content-between @(post.PostType == PostType.Offer? "border-warning" : "border-success")">
-                <p class="card-text m-0 font-weight-bold @(post.PostType == PostType.Offer? "text-warning" : "text-success")">@post.PostType</p>              
-            </div>
-        </div>
-    }
-</div>
+        }
+        @{
+            var prevDisabled = (!(Model.HasPreviousPage) ? "disabled" : "");
+            var nextDisabled = (!(Model.HasNextPage) ? "disabled" : "");
+        }
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item  @prevDisabled"><a class="page-link" asp-action="MyPosts" asp-route-pageIndex="@(Model.PageIndex - 1)">Previous</a></li>
+                @*@for (int i = 0; i < pagesNumber; i++) {
+                    @if (PageIndex == i+1) {
+                        <li class="page-item active"><a class="page-link " href="#">@(i + 1)</a></li>
+                    } else {
+                        <li class="page-item"><a class="page-link" href="#">@(i + 1)</a></li>
+                    }
+                }*@
+                <li class="page-item  @nextDisabled"><a class="page-link" asp-action="MyPosts" asp-route-pageIndex="@(Model.PageIndex + 1)">Next</a></li>
+            </ul>
+        </nav>
+    </div>
