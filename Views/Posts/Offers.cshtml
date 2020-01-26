@@ -9,94 +9,115 @@
     var savedPosts = (List<SavedPost>)ViewData["SavedPosts"];
 }
 
-<div class="container w-100">
-
-    <a href="@Url.Action("Create")" class="btn btn-outline-primary mt-3"><i class="fas fa-pen"></i> Create Post</a>
-
-    <ul class="nav nav-tabs mt-3">
-        <li class="nav-item">
-            <a class="nav-link" asp-action="Index">All Posts</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active font-weight-bold" asp-action="Offers">Offers</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" asp-action="Requests">Requests</a>
-        </li>
-    </ul>
-
-
-    @if (Model.Count() == 0) {
-        <div class="my-5 d-flex justify-content-around">
-            <div class="d-flex flex-column justify-content-center align-content-center">
-                <img src="~/images/no-posts.svg" style="width: 450px" />
-                <h4 class="text-center mt-3 font-weight-bold" style="color:#444053">There are no posts to show.</h4>
-            </div>
-
+    <div class="container w-100">
+        <div class="d-flex flex-row justify-content-between align-items-center mt-3">
+            <a href="@Url.Action("Create")" class="btn btn-outline-primary"><i class="fas fa-pen"></i> Create Post</a>
+            <form class="w-75 d-flex flex-row justify-content-end" method="get">
+                <input type="text" name="search" class="form-control w-50" placeholder="Search..." />
+                <button type="submit" class="btn btn-primary ml-3"><i class="fas fa-search"></i> Search</button>
+            </form>
         </div>
-    } else {
-        <div class="px-4 d-flex flex-column align-items-center" style="overflow-y:auto; max-height: 550px">
-            @foreach (var post in Model) {
-                <div class="card w-75 my-4 @(post.PostType == PostType.Offer ? "border-warning" : "border-success")">
-                    <div class="card-header text-primary @(post.PostType == PostType.Offer ? "border-warning" : "border-success")"
-                         style="display:flex; justify-content:space-between">
 
-                        <h5>@@@Html.DisplayFor(modelItem => post.User.UserName)</h5>
-                        @if (SignInManager.IsSignedIn(User)) {
-                            <div class="dropdown">
-                                <a class="text-dark"
-                                   type="button"
-                                   id="dropdownMenuButton"
-                                   data-toggle="dropdown"
-                                   aria-haspopup="true"
-                                   aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    @{
-                                        var sp = savedPosts.Where(x => x.UserId == UserManager.GetUserId(User) && x.PostId == post.Id).FirstOrDefault();
-                                        if (sp != null) {
-                                            <a class="dropdown-item dropdown-item-text" asp-action="UnsavePost" asp-route-id="@post.Id"><i class="fas fa-minus"></i> Unsave</a>
-                                        } else {
-                                            <a class="dropdown-item dropdown-item-text" asp-action="SavePost" asp-route-id="@post.Id"><i class="fas fa-plus"></i> Save</a>
-                                        }
-                                    }
-                                    @if (post.UserId == UserManager.GetUserId(User)) {
-                                        <div class="dropdown-divider"></div>
-                                        <a asp-action="Edit" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-edit"></i> Edit</a>
-                                        <a asp-action="Delete" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-trash"></i> Delete</a>
-                                    }
-                                </div>
-                            </div>
-                                        }
-                    </div>
-                    <div class="card-body">
-                        <div class="text-muted mb-2" style="font-size:0.8rem">@post.DatePosted.ToString("dd MMM yyyy H:mm")</div>
-                        <h5 class="card-title text-primary font-weight-bold">@Html.DisplayFor(modelItem => post.Title)</h5>
-                        <p class="card-text">@Html.DisplayFor(modelItem => post.Content)</p>
-                    </div>
-                    <div class="card-footer py-1 d-flex justify-content-between @(post.PostType == PostType.Offer ? "border-warning" : "border-success")">
-                        <p class="card-text m-0 font-weight-bold @(post.PostType == PostType.Offer ? "text-warning" : "text-success")">@post.PostType</p>
+        <ul class="nav nav-tabs mt-3">
+            <li class="nav-item">
+                <a class="nav-link" asp-action="Index">All Posts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active font-weight-bold" asp-action="Offers">Offers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-action="Requests">Requests</a>
+            </li>
+        </ul>
 
-                    </div>
+
+        @if (Model.Count() == 0)
+        {
+            <div class="my-5 d-flex justify-content-around">
+                <div class="d-flex flex-column justify-content-center align-content-center">
+                    <img src="~/images/no-posts.svg" style="width: 450px" />
+                    <h4 class="text-center mt-3 font-weight-bold" style="color:#444053">There are no posts to show.</h4>
                 </div>
+
+            </div>
+        }
+        else
+        {
+            <div class="px-4 d-flex flex-column align-items-center" style="overflow-y:auto; max-height: 520px">
+                @foreach (var post in Model)
+                {
+                    <div class="card w-75 my-4 @(post.PostType == PostType.Offer ? "border-warning" : "border-success")">
+                        <div class="card-header text-primary @(post.PostType == PostType.Offer ? "border-warning" : "border-success")"
+                             style="display:flex; justify-content:space-between">
+
+                            <h5>@@@Html.DisplayFor(modelItem => post.User.UserName)</h5>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <div class="dropdown">
+                                    <a class="text-dark"
+                                       type="button"
+                                       id="dropdownMenuButton"
+                                       data-toggle="dropdown"
+                                       aria-haspopup="true"
+                                       aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        @{
+                                            var sp = savedPosts.Where(x => x.UserId == UserManager.GetUserId(User) && x.PostId == post.Id).FirstOrDefault();
+                                            if (sp != null)
+                                            {
+                                                <a class="dropdown-item dropdown-item-text" asp-action="UnsavePost" asp-route-id="@post.Id"><i class="fas fa-minus"></i> Unsave</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="dropdown-item dropdown-item-text" asp-action="SavePost" asp-route-id="@post.Id"><i class="fas fa-plus"></i> Save</a>
+                                            }
                                         }
-            @{
-                var prevDisabled = (!(Model.HasPreviousPage) ? "disabled" : "");
-                var nextDisabled = (!(Model.HasNextPage) ? "disabled" : "");
-            }
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li class="page-item  @prevDisabled"><a class="page-link" asp-action="Offers" asp-route-pageIndex="@(Model.PageIndex - 1)">Previous</a></li>
-                    @for (int i = 1; i <= Model.TotalPages; i++) {
-                        if (Model.PageIndex == i) {
-                            <li class="page-item active"><a class="page-link" asp-action="Offers" asp-route-pageIndex="@(i)">@i</a></li>
-                        } else {
-                            <li class="page-item"><a class="page-link" asp-action="Offers" asp-route-pageIndex="@(i)">@i</a></li>
+                                        @if (post.UserId == UserManager.GetUserId(User))
+                                        {
+                                            <div class="dropdown-divider"></div>
+                                            <a asp-action="Edit" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-edit"></i> Edit</a>
+                                            <a asp-action="Delete" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-trash"></i> Delete</a>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="card-body">
+                            <div class="text-muted mb-2" style="font-size:0.8rem">@post.DatePosted.ToString("dd MMM yyyy H:mm")</div>
+                            <h5 class="card-title text-primary font-weight-bold">@Html.DisplayFor(modelItem => post.Title)</h5>
+                            <p class="card-text">@Html.DisplayFor(modelItem => post.Content)</p>
+                        </div>
+                        <div class="card-footer py-1 d-flex justify-content-between @(post.PostType == PostType.Offer ? "border-warning" : "border-success")">
+                            <p class="card-text m-0 font-weight-bold @(post.PostType == PostType.Offer ? "text-warning" : "text-success")">@post.PostType</p>
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div class="w-100 d-flex flex-row justify-content-center mt-2">
+                @{
+                    var prevDisabled = (!(Model.HasPreviousPage) ? "disabled" : "");
+                    var nextDisabled = (!(Model.HasNextPage) ? "disabled" : "");
+                }
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-sm">
+                        <li class="page-item  @prevDisabled"><a class="page-link" asp-action="Offers" asp-route-pageIndex="@(Model.PageIndex - 1)">Previous</a></li>
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            if (Model.PageIndex == i)
+                            {
+                                <li class="page-item active"><a class="page-link" asp-action="Offers" asp-route-pageIndex="@(i)">@i</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" asp-action="Offers" asp-route-pageIndex="@(i)">@i</a></li>
+                            }
                         }
-                    }
-                    <li class="page-item  @nextDisabled"><a class="page-link" asp-action="Offers" asp-route-pageIndex="@(Model.PageIndex + 1)">Next</a></li>
-                </ul>
-            </nav>
-        </div>
-    }
-</div>
+                        <li class="page-item  @nextDisabled"><a class="page-link" asp-action="Offers" asp-route-pageIndex="@(Model.PageIndex + 1)">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        }
+    </div>
 
