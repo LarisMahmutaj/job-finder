@@ -1,0 +1,87 @@
+﻿@model JobFinder.Models.UserProfile;
+
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+
+    <div class="container">
+        @{
+            if (Model == null)
+            {
+                <a href="@Url.Action("Create")" class="btn btn-outline-primary mt-3"><i class="fas fa-pen"></i>Create Profile</a>
+            }
+            else
+            {
+                <div class="user-profile">
+                    <div class="card w-75 mx-5 mt-3">
+                        <h4 class="card-header">@Model.User.UserName</h4>
+                        <dl class="row mx-3 my-4 ">
+                            <dt class="col-sm-2 ">
+                                @Html.DisplayNameFor(model => model.Education):
+                            </dt>
+                            <dd class="col-sm-9">
+                                @Html.DisplayFor(model => model.Education)
+                            </dd>
+                            <dt class="col-sm-2 m-3">
+                                @Html.DisplayNameFor(model => model.FirstName):
+                            </dt>
+                            <dd class="col-sm-9 m-3">
+                                @Html.DisplayFor(model => model.FirstName)
+                            </dd>
+                            <dt class="col-sm-2 m-3">
+                                @Html.DisplayNameFor(model => model.LastName):
+                            </dt>
+                            <dd class="col-sm-9 m-3">
+                                @Html.DisplayFor(model => model.LastName)
+                            </dd>
+                            <dt class="col-sm-2 m-3">
+                                @Html.DisplayNameFor(model => model.Gender):
+                            </dt>
+                            <dd class="col-sm-9 m-3">
+                                @Html.DisplayFor(model => model.Gender)
+                            </dd>
+                            <dt class="col-sm-2 m-3">
+                                @Html.DisplayNameFor(model => model.BirthDate):
+                            </dt>
+                            <dd class="col-sm-9 m-3">
+                                @Html.DisplayFor(model => model.BirthDate)
+                            </dd>
+                            <dt class="col-sm-3 m-3">
+                                @Html.DisplayNameFor(model => model.PhoneNumber):
+                            </dt>
+                            <dd class="col-sm-8 m-3">
+                                @Html.DisplayFor(model => model.PhoneNumber)
+                            </dd>
+                            <dt class="col-sm-2 m-3">
+                                @Html.DisplayNameFor(model => model.Headline):
+                            </dt>
+                            <dd class="col-sm-9 m-3">
+                                @Html.DisplayFor(model => model.Headline)
+                            </dd>
+                            <dt class="col-sm-2 m-3">
+                                @Html.DisplayNameFor(model => model.City):
+                            </dt>
+                            <dd class="col-sm-9 m-3">
+                                @Html.DisplayFor(model => model.City)
+                            </dd>
+                            @*<dt class="col-sm-2 m-3">
+                                @Html.DisplayNameFor(model => model.UserId):
+                            </dt>
+                            <dd class="col-sm-9 m-3">
+                                @Html.DisplayFor(model => model.UserId)
+                            </dd>*@
+                        </dl>
+
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary" style="float:right; margin:0 20px 15px 0;"><i class="fas fa-edit"></i>Edit</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            }
+        }
+    </div>  
