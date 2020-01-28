@@ -1,5 +1,6 @@
 ﻿@model PaginatedList<JobFinder.Models.SavedPost>
 @using Microsoft.AspNetCore.Identity
+@using System.Text.RegularExpressions
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
@@ -42,7 +43,7 @@
                     <div class="card-body">
                         <div class="text-muted mb-2" style="font-size:0.8rem">@savedPost.Post.DatePosted.ToString("dd MMM yyyy H:mm")</div>
                         <h5 class="card-title text-primary font-weight-bold">@Html.DisplayFor(modelItem => savedPost.Post.Title)</h5>
-                        <p class="card-text">@Html.DisplayFor(modelItem => savedPost.Post.Content)</p>
+                        <p class="card-text" style="white-space:pre-line;">@Html.DisplayFor(modelItem => savedPost.Post.Content)</p>
                     </div>
                     <div class="card-footer py-1 d-flex justify-content-between @(savedPost.Post.PostType == PostType.Offer ? "border-warning" : "border-success")">
                         <p class="card-text m-0 font-weight-bold @(savedPost.Post.PostType == PostType.Offer ? "text-warning" : "text-success")">@savedPost.Post.PostType</p>
@@ -50,7 +51,7 @@
                 </div>
             }
         }
-        
+
     </div>
     <div class="w-100 d-flex flex-row justify-content-center mt-2">
         @{

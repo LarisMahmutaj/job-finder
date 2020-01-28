@@ -1,5 +1,6 @@
 ﻿@model PaginatedList<JobFinder.Models.Post>     
 @using Microsoft.AspNetCore.Identity
+@using System.Text.RegularExpressions
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
@@ -11,8 +12,10 @@
 
     <div class="container w-100">
         <div class="d-flex flex-row justify-content-between align-items-center mt-3">
-            <a href="@Url.Action("Create")" class="btn btn-outline-primary"><i class="fas fa-pen"></i> Create Post</a>
-            <form class="w-75 d-flex flex-row justify-content-end" method="get">
+            @if (SignInManager.IsSignedIn(User)) {
+                <a href="@Url.Action("Create")" class="btn btn-outline-primary"><i class="fas fa-pen"></i> Create Post</a>
+            }
+            <form class="w-75 d-flex flex-row justify-content-end ml-auto" method="get">
                 <input type="text" name="search" class="form-control w-50" placeholder="Search..." />
                 <button type="submit" class="btn btn-primary ml-3"><i class="fas fa-search"></i> Search</button>
             </form>
@@ -77,19 +80,20 @@
                         <div class="card-body">
                             <div class="text-muted mb-2" style="font-size:0.8rem">@post.DatePosted.ToString("dd MMM yyyy H:mm")</div>
                             <h5 class="card-title text-primary font-weight-bold">@Html.DisplayFor(modelItem => post.Title)</h5>
-                            <p class="card-text">@Html.DisplayFor(modelItem => post.Content)</p>
+                            @if (post.Content.Split(" ").Length > 50) {
+                                var trimmedContent = Regex.Match(post.Content, "(^(?:\\S+\\s+\\n?){1,50})").ToString();
+                                <p class="card-text" style="white-space:pre-line">@(trimmedContent)<a class="text-muted stretched-link" asp-action="Details" asp-route-id="@post.Id">...read more</a> </p>
+                            } else {
+                                <p class="card-text">@Html.DisplayFor(modelItem => post.Content)<a class="stretched-link" asp-action="Details" asp-route-id="@post.Id"></a></p>
+                            }
                         </div>
                         <div class="card-footer py-1 d-flex justify-content-between @(post.PostType == PostType.Offer ? "border-warning" : "border-success")">
                             <p class="card-text m-0 font-weight-bold @(post.PostType == PostType.Offer ? "text-warning" : "text-success")">@post.PostType</p>
-
                         </div>
                     </div>
-                }
-
-                    
+                }         
             </div>
 
-            
             <div class="w-100 d-flex flex-row justify-content-center mt-2">
                 <nav>
                     @{

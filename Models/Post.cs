@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace JobFinder.Models {
     public class Post {
         public int Id { get; set; }
+        [Required]
         public PostType PostType { get; set; }
         [Required]
         public string Title { get; set; }

@@ -14,6 +14,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using System.Net;
 
+
 namespace JobFinder.Controllers {
     public class PostsController : Controller {
 
@@ -41,7 +42,7 @@ namespace JobFinder.Controllers {
             }
          
             posts.Reverse();
-        
+
             PaginatedList<Post> paginatedPosts = PaginatedList<Post>.Create(posts, pageIndex ?? 1, 5);
 
             return View(paginatedPosts);
@@ -255,6 +256,20 @@ namespace JobFinder.Controllers {
             _context.SavedPosts.Remove(savedPost);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(ListSaved));
+        }
+
+        public async Task<IActionResult> Details(int? id) {
+            if(id == null) {
+                return NotFound();
+            }
+
+            var post = await _context.Posts.Include(p => p.User).FirstOrDefaultAsync(p => p.Id == id);
+
+            if (post == null) {
+                return NotFound();
+            }
+            ViewData["SavedPosts"] = await _context.SavedPosts.Include(p => p.Post).ToListAsync();
+            return View(post);
         }
 
         private bool PostExists(int id) {
