@@ -11,40 +11,48 @@
     <input type="hidden" asp-for="Id" />
 
     <div class="form-group col-sm-9 mt-4 w-50">
-        <input class="form-control" type="text" asp-for="FirstName" placeholder="First Name" />
+        <label asp-for="FirstName" class="control-label"></label>
+        <input class="form-control" type="text" asp-for="FirstName" />
         <span asp-validation-for="FirstName" class="text-danger"></span>
     </div>
     <div class="form-group col-sm-9 w-50">
-        <input class="form-control" type="text" asp-for="LastName" placeholder="Last Name" />
+        <label asp-for="LastName" class="control-label"></label>
+        <input class="form-control" type="text" asp-for="LastName" />
         <span asp-validation-for="LastName" class="text-danger"></span>
     </div>
     <div class="form-group col-sm-9 w-25">
+        <label asp-for="Gender" class="control-label"></label>
         <select class="form-control" asp-for="Gender" asp-items="@Html.GetEnumSelectList(typeof(Gender))"></select>
         <span asp-validation-for="Gender"></span>
     </div>
     <div class="form-group col-sm-9 w-25">
-        <input class="form-control" asp-for="BirthDate" type="date" placeholder="BirthDate" />
+        <label asp-for="BirthDate" class="control-label"></label>
+        <input class="form-control" asp-for="BirthDate" type="date"/>
         <span asp-validation-for="BirthDate" class="text-danger"></span>
     </div>
     <div class="form-group col-sm-9 w-25">
-        <input class="form-control" asp-for="PhoneNumber" type="text" placeholder="PhoneNumber" />
+        <label asp-for="PhoneNumber" class="control-label"></label>
+        <input class="form-control" asp-for="PhoneNumber" type="text"/>
         <span asp-validation-for="PhoneNumber"></span>
     </div>
     <div class="form-group col-sm-9">
-        <input class="form-control" asp-for="Education" type="text" placeholder="Education" />
+        <label asp-for="Education" class="control-label"></label>
+        <input class="form-control" asp-for="Education" type="text" />
         <span asp-validation-for="Education"></span>
     </div>
     <div class="form-group col-sm-9 ">
+        <label asp-for="Headline" class="control-label"></label>
         <textarea style="resize:none"
                   class="form-control"
                   asp-for="Headline"
                   rows="4"
-                  placeholder="Headline"
+                  placeholder="Type here..."
                   maxlength="300"></textarea>
         <span asp-validation-for="Headline"></span>
     </div>
     <div class="form-group col-sm-9 w-50">
-        <input class="form-control" asp-for="City" type="text" placeholder="City" />
+        <label asp-for="City" class="control-label"></label>
+        <input class="form-control" asp-for="City" type="text" />
         <span asp-validation-for="City"></span>
     </div>
     @*<div class="form-group col-sm-9">
@@ -53,7 +61,7 @@
         </div>*@
     <div class="form-group col-sm-9 ">
         <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Cancel</a>
-        <button type="submit" class="btn btn-success"><i class="fas fa-check"></i>Save Profile</button>
+        <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Save Profile</button>
     </div>
 </form>
 </div>
