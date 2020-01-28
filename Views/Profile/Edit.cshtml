@@ -1,0 +1,61 @@
+﻿@model JobFinder.Models.UserProfile;
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2 class="m-3">Edit Profile</h2>
+<hr />
+
+
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group col-sm-9 mt-4 w-50">
+        <input class="form-control" type="text" asp-for="FirstName" placeholder="First Name" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+    <div class="form-group col-sm-9 w-50">
+        <input class="form-control" type="text" asp-for="LastName" placeholder="Last Name" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div class="form-group col-sm-9 w-25">
+        <select class="form-control" asp-for="Gender" asp-items="@Html.GetEnumSelectList(typeof(Gender))"></select>
+        <span asp-validation-for="Gender"></span>
+    </div>
+    <div class="form-group col-sm-9 w-25">
+        <input class="form-control" asp-for="BirthDate" type="date" placeholder="BirthDate" />
+        <span asp-validation-for="BirthDate" class="text-danger"></span>
+    </div>
+    <div class="form-group col-sm-9 w-25">
+        <input class="form-control" asp-for="PhoneNumber" type="text" placeholder="PhoneNumber" />
+        <span asp-validation-for="PhoneNumber"></span>
+    </div>
+    <div class="form-group col-sm-9">
+        <input class="form-control" asp-for="Education" type="text" placeholder="Education" />
+        <span asp-validation-for="Education"></span>
+    </div>
+    <div class="form-group col-sm-9">
+            <textarea style="resize:none"
+                      class="form-control"
+                      asp-for="Headline"
+                      rows="4"
+                      placeholder="Headline"
+                      maxlength="300"></textarea>
+            <span asp-validation-for="Headline"></span>
+     
+    </div>
+    <div class="form-group col-sm-9 w-50">
+        <input class="form-control" asp-for="City" type="text" placeholder="City" />
+        <span asp-validation-for="City"></span>
+    </div>
+    @*<div class="form-group col-sm-9">
+        <select class="form-control" asp-for="UserId" asp-items="ViewBag.UserId"></select>
+        <span asp-validation-for="UserId" class="text-danger"></span>
+    </div>*@
+    <div class="form-group col-sm-9">
+        <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Cancel</a>
+        <button type="submit" class="btn btn-success"><i class="fas fa-check"></i>Save Changes</button>
+    </div>
+</form>
