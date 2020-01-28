@@ -95,7 +95,7 @@ namespace JobFinder.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = userId });
             }
 
             return View(userProfile);
