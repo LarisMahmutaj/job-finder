@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2 class="m-3">Edit</h2>
+<h2 class="m-3">Edit Profile</h2>
 <hr />
 
 
@@ -12,23 +12,23 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Id" />
 
-    <div class="form-group col-sm-9 mt-4">
+    <div class="form-group col-sm-9 mt-4 w-50">
         <input class="form-control" type="text" asp-for="FirstName" placeholder="First Name" />
         <span asp-validation-for="FirstName" class="text-danger"></span>
     </div>
-    <div class="form-group col-sm-9">
+    <div class="form-group col-sm-9 w-50">
         <input class="form-control" type="text" asp-for="LastName" placeholder="Last Name" />
         <span asp-validation-for="LastName" class="text-danger"></span>
     </div>
-    <div class="form-group col-sm-9">
+    <div class="form-group col-sm-9 w-25">
         <select class="form-control" asp-for="Gender" asp-items="@Html.GetEnumSelectList(typeof(Gender))"></select>
         <span asp-validation-for="Gender"></span>
     </div>
-    <div class="form-group col-sm-9">
+    <div class="form-group col-sm-9 w-25">
         <input class="form-control" asp-for="BirthDate" type="date" placeholder="BirthDate" />
         <span asp-validation-for="BirthDate" class="text-danger"></span>
     </div>
-    <div class="form-group col-sm-9">
+    <div class="form-group col-sm-9 w-25">
         <input class="form-control" asp-for="PhoneNumber" type="text" placeholder="PhoneNumber" />
         <span asp-validation-for="PhoneNumber"></span>
     </div>
@@ -37,10 +37,16 @@
         <span asp-validation-for="Education"></span>
     </div>
     <div class="form-group col-sm-9">
-        <input class="form-control" asp-for="Headline" type="text" placeholder="Headline" />
-        <span asp-validation-for="Headline"></span>
+            <textarea style="resize:none"
+                      class="form-control"
+                      asp-for="Headline"
+                      rows="4"
+                      placeholder="Headline"
+                      maxlength="300"></textarea>
+            <span asp-validation-for="Headline"></span>
+     
     </div>
-    <div class="form-group col-sm-9">
+    <div class="form-group col-sm-9 w-50">
         <input class="form-control" asp-for="City" type="text" placeholder="City" />
         <span asp-validation-for="City"></span>
     </div>
