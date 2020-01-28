@@ -48,7 +48,7 @@
                         <div class="card-header text-primary @(post.PostType == PostType.Offer ? "border-warning" : "border-success")"
                              style="display:flex; justify-content:space-between">
 
-                            <h5>@@@Html.DisplayFor(modelItem => post.User.UserName)</h5>
+                            <h5><a class="text-decoration-none text-info" asp-action="Index" asp-controller="Profile" asp-route-id="@post.User.Id">@@@Html.DisplayFor(modelItem => post.User.UserName)</a></h5>
                             @if (SignInManager.IsSignedIn(User)) {
                                 <div class="dropdown">
                                     <a class="text-dark"
@@ -77,7 +77,7 @@
                                 </div>
                              }
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" style="transform: rotate(0);">
                             <div class="text-muted mb-2" style="font-size:0.8rem">@post.DatePosted.ToString("dd MMM yyyy H:mm")</div>
                             <h5 class="card-title text-primary font-weight-bold">@Html.DisplayFor(modelItem => post.Title)</h5>
                             @if (post.Content.Split(" ").Length > 50) {

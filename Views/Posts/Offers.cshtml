@@ -78,7 +78,7 @@
                             </div>
                         }
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="transform: rotate(0);">
                         <div class="text-muted mb-2" style="font-size:0.8rem">@post.DatePosted.ToString("dd MMM yyyy H:mm")</div>
                         <h5 class="card-title text-primary font-weight-bold">@Html.DisplayFor(modelItem => post.Title)</h5>
                         @if (post.Content.Split(" ").Length > 50) {

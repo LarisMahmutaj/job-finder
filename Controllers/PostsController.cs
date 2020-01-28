@@ -56,11 +56,12 @@ namespace JobFinder.Controllers {
             if (search != null) {
                 search.ToLower();
                 posts = await _context.Posts
+                    .Where(p => p.PostType == PostType.Offer)
                     .Where(x => x.Title.ToLower().Contains(search) || x.Content.ToLower().Contains(search) || x.User.UserName.ToLower().Contains(search))
                     .Include(p => p.User)
                     .ToListAsync();
             } else {
-                posts = await _context.Posts.Include(p => p.User).ToListAsync();
+                posts = await _context.Posts.Where(p => p.PostType == PostType.Offer).Include(p => p.User).ToListAsync();
             }
 
             posts.Reverse();
@@ -77,11 +78,12 @@ namespace JobFinder.Controllers {
             if (search != null) {
                 search.ToLower();
                 posts = await _context.Posts
+                    .Where(p => p.PostType == PostType.Request)
                     .Where(x => x.Title.ToLower().Contains(search) || x.Content.ToLower().Contains(search) || x.User.UserName.ToLower().Contains(search))
                     .Include(p => p.User)
                     .ToListAsync();
             } else {
-                posts = await _context.Posts.Include(p => p.User).ToListAsync();
+                posts = await _context.Posts.Where(p => p.PostType == PostType.Request).Include(p => p.User).ToListAsync();
             }
 
             posts.Reverse();
@@ -255,7 +257,7 @@ namespace JobFinder.Controllers {
 
             _context.SavedPosts.Remove(savedPost);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(ListSaved));
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Details(int? id) {

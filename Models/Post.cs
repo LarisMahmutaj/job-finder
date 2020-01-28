@@ -13,7 +13,7 @@ namespace JobFinder.Models {
         [Required]
         public string Title { get; set; }
         [Required]
-        [MaxLength(1000)]
+        [MaxLength(5000)]
         public string Content { get; set; }
         public DateTime DatePosted { get; set; }
 

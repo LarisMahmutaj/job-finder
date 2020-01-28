@@ -7,6 +7,7 @@ using JobFinder.Data;
 using JobFinder.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -25,12 +26,19 @@ namespace JobFinder.Controllers
             _context = context;
         }
 
-        
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string id)
         {
+            //var userProfile = await _context.UserProfiles.Include(x => x.User).FirstOrDefaultAsync(u => u.UserId == userId);
+            if (id == null) {
+                return NotFound();
+            }
+            var userProfile = await _context.UserProfiles.Include(x => x.User).Where(p => p.UserId == id).FirstOrDefaultAsync();
+            
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var userProfile = await _context.UserProfiles.Include(x => x.User).FirstOrDefaultAsync(u => u.UserId == userId);
-       
+            ViewData["LoggedUserId"] = userId;
+
+            ViewData["ProfileUserId"] = id;
+
             return View((UserProfile)userProfile);         
         }   
 

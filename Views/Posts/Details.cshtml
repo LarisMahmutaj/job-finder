@@ -9,7 +9,7 @@
     var savedPosts = (List<SavedPost>)ViewData["SavedPosts"];
 }
 
-    <div class="w-100 d-flex justify-content-center">
+    <div class="w-100 d-flex justify-content-center mb-4">
         <div class="w-75">
             <div class="card my-4 @(Model.PostType == PostType.Offer ? "border-warning" : "border-success")">
                 <div class="card-header text-primary @(Model.PostType == PostType.Offer ? "border-warning" : "border-success")"

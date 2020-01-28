@@ -1,55 +1,57 @@
 ﻿@model JobFinder.Models.UserProfile;
+@using Microsoft.AspNetCore.Identity
 
-
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 @{
     ViewData["Title"] = "Index";
-
+    var profileUserId = (string)ViewData["ProfileUserId"];
+    var loggedUserId = (string)ViewData["LoggedUserId"];
 }
 
 
-    <div class="container w-75">
-        @{
-            if (Model == null)
-            {
-                
-                <div class="my-5 d-flex justify-content-around">
-                            <div class="d-flex flex-column justify-content-center align-content-center">
-                                <img src="~/images/personal_site.svg" style="width: 600px;" />
-                                <h4 class="text-center mt-3 font-weight-bold" style="color:#444053">You haven't created a profile yet</h4>
-                                <a href="@Url.Action("Create")" class="btn btn-outline-primary" style="width:100px; margin: 20px 0px 0px 245px;"><i class="fas fa-pen fa-fw"></i> Create</a>
-                            </div>
-                    
+<div class="container w-75">
+    @if (Model == null) {
+
+        <div class="my-5 d-flex justify-content-around">
+            <div class="d-flex flex-column justify-content-center align-content-center">
+                <img src="~/images/personal_site.svg" style="width: 600px;" />
+                @if (loggedUserId == profileUserId) {
+                    <h4 class="text-center mt-3 font-weight-bold" style="color:#444053">You havent created a profile yet</h4>
+                    <a href="@Url.Action("Create")" class="btn btn-outline-primary" style="width:100px; margin: 20px auto;"><i class="fas fa-pen fa-fw"></i> Create</a>
+                } else {
+                    <h4 class="text-center mt-3 font-weight-bold" style="color:#444053">This user hasn't created a profile yet</h4>
+                    <a asp-action="Index" asp-controller="Posts" class="btn btn-primary" style="width:170px; margin: 20px auto;"><i class="fas fa-arrow-left"></i>Back to Newsfeed</a>
+                }
+            </div>
+        </div>
+    } else {
+        <div class="card w-100 mx-3 mt-4">
+            <h2 class="card-header font-weight-bolder">@Model.User.UserName</h2>
+            <div class="row">
+                <div class="col-md-9 m-3">
+                    <h5 class="font-weight-bold">Education</h5>
+                    <p class="mx-5 text-info font-weight-bold">@Html.DisplayFor(model => model.Education)</p>
+                    <hr />
+                    <h5 class="font-weight-bold">Basic Information</h5>
+                    <p class="mx-5 mt-3">@Html.DisplayNameFor(model => model.FirstName): @Html.DisplayFor(model => model.FirstName)</p>
+                    <p class="mx-5 mt-3">@Html.DisplayNameFor(model => model.LastName): @Html.DisplayFor(model => model.LastName)</p>
+                    <h6 class="mx-5 mt-3">@Html.DisplayNameFor(model => model.Gender): @Html.DisplayFor(model => model.Gender)</h6>
+                    <h6 class="mx-5 mt-3">@Html.DisplayNameFor(model => model.BirthDate): @Html.DisplayFor(model => model.BirthDate)</h6>
+                    <hr />
+                    <h5 class="font-weight-bold">Contact Information</h5>
+                    <h6 class="mx-5 mt-3">@Html.DisplayNameFor(model => model.PhoneNumber): @Html.DisplayFor(model => model.PhoneNumber)</h6>
+                    <h6 class="mx-5 mt-3">@Html.DisplayNameFor(model => model.City): @Html.DisplayFor(model => model.City)</h6>
+                    <hr />
+                    <h5 class="font-weight-bold">Description</h5>
+                    <h6 class="mx-5 mt-3">@Html.DisplayNameFor(model => model.Headline): @Html.DisplayFor(model => model.Headline)</h6>
+                </div>
+            </div>
+            @if(UserManager.GetUserId(User) == Model.UserId) {
+                <div>
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary" style="float:right; margin:0 20px 15px 0;"><i class="fas fa-edit"></i> Edit</a>
                 </div>
             }
-            else
-            {
-
-                <div class="card w-100 mx-3 mt-4">
-                    <h2 class="card-header font-weight-bolder">@Model.User.UserName</h2>
-                    <div class="row">
-                        <div class="col-md-9 m-3">
-                            <h5 class="font-weight-bold">Education</h5>
-                            <p class="mx-5 text-info font-weight-bold">@Html.DisplayFor(model => model.Education)</p>
-                            <hr />
-                            <h5 class="font-weight-bold">Basic Information</h5>
-                            <p class="mx-5 mt-3">@Html.DisplayNameFor(model => model.FirstName): @Html.DisplayFor(model => model.FirstName)</p>
-                            <p class="mx-5 mt-3">@Html.DisplayNameFor(model => model.LastName): @Html.DisplayFor(model => model.LastName)</p>
-                            <h6 class="mx-5 mt-3">@Html.DisplayNameFor(model => model.Gender): @Html.DisplayFor(model => model.Gender)</h6>
-                            <h6 class="mx-5 mt-3">@Html.DisplayNameFor(model => model.BirthDate): @Html.DisplayFor(model => model.BirthDate)</h6>
-                            <hr />
-                            <h5 class="font-weight-bold">Contact Information</h5>
-                            <h6 class="mx-5 mt-3">@Html.DisplayNameFor(model => model.PhoneNumber): @Html.DisplayFor(model => model.PhoneNumber)</h6>
-                            <h6 class="mx-5 mt-3">@Html.DisplayNameFor(model => model.City): @Html.DisplayFor(model => model.City)</h6>
-                            <hr />
-                            <h5 class="font-weight-bold">Description</h5>
-                            <h6 class="mx-5 mt-3">@Html.DisplayNameFor(model => model.Headline): @Html.DisplayFor(model => model.Headline)</h6>
-                        </div>
-                    </div>
-
-                    <div>
-                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary" style="float:right; margin:0 20px 15px 0;"><i class="fas fa-edit"></i> Edit</a>
-                    </div>
-                </div>
-            }
-        }
-    </div>  
+        </div>
+    }
+</div>  
