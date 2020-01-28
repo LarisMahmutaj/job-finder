@@ -61,19 +61,17 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         @{
                                             var sp = savedPosts.Where(x => x.UserId == UserManager.GetUserId(User) && x.PostId == post.Id).FirstOrDefault();
-                                            if (sp != null)
-                                            {
+                                            if (sp != null) {
                                                 <a class="dropdown-item dropdown-item-text" asp-action="UnsavePost" asp-route-id="@post.Id"><i class="fas fa-minus"></i> Unsave</a>
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 <a class="dropdown-item dropdown-item-text" asp-action="SavePost" asp-route-id="@post.Id"><i class="fas fa-plus"></i> Save</a>
                                             }
                                         }
-                                        @if (post.UserId == UserManager.GetUserId(User))
-                                        {
+                                        @if (User.IsInRole("Admin")) {
                                             <div class="dropdown-divider"></div>
-                                            <a asp-action="Edit" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-edit"></i> Edit</a>
+                                            if (post.UserId == UserManager.GetUserId(User)) {
+                                                <a asp-action="Edit" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-edit"></i> Edit</a>
+                                            }
                                             <a asp-action="Delete" asp-route-id="@post.Id" class="dropdown-item dropdown-item-text"><i class="fas fa-trash"></i> Delete</a>
                                         }
                                     </div>

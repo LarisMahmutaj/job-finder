@@ -1,0 +1,50 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IEnumerable<IdentityUser>
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    ViewData["Title"] = "Users";
+}
+
+<div class="container w-100">
+    <ol class="breadcrumb my-4">
+        <li class="breadcrumb-item active">Users</li>
+    </ol>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model) {
+                <tr>
+                    <th scope="row">@(user.Id)</th>
+                    <td>@(user.UserName)</td>
+                    <td>@(user.Email)</td>
+                    <td class="px-1">
+                        @if (UserManager.GetUserId(User) != user.Id) {
+                            if (user.LockoutEnd < DateTime.Now) {
+                                user.LockoutEnd = null;
+                            }
+                            <div>
+                                @*@if(user.AccessFailedCount  )*@
+                                @if (user.LockoutEnd != null) {
+                                    <a class="btn btn-info btn-block btn-sm w-75" asp-action="UnLockoutUser" asp-route-id="@user.Id"><i class="fas fa-lock-open"></i> Un-Lockout</a>
+                                } else {
+                                    <a class="btn btn-danger btn-block btn-sm w-75" asp-action="LockoutUser" asp-route-id="@user.Id"><i class="fas fa-user-lock"></i> Lockout</a>
+                                }
+                            </div>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

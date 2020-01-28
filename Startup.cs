@@ -30,7 +30,7 @@ namespace JobFinder {
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -39,11 +39,16 @@ namespace JobFinder {
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddAuthorization(options => {
+                options.AddPolicy("RequireAdministratorRole",
+                     policy => policy.RequireRole("Admin"));
+            });
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider services) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
@@ -72,6 +77,27 @@ namespace JobFinder {
                     );
 
             });
+
+            CreateUserRoles(services).Wait();
+        }
+
+        private async Task CreateUserRoles(IServiceProvider serviceProvider) {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+
+            IdentityResult roleResult;
+            //Adding Addmin Role  
+            var roleCheck = await RoleManager.RoleExistsAsync("Admin");
+            if (!roleCheck) {
+                //create the roles and seed them to the database  
+                roleResult = await RoleManager.CreateAsync(new IdentityRole("Admin"));
+            }
+            //Assign Admin role to the main User here we have given our newly loregistered login id for Admin management  
+            IdentityUser user = await UserManager.FindByIdAsync("eaecfe04-4e25-4dd9-b64d-67c797f40e39");
+            var User = new IdentityUser();
+            await UserManager.AddToRoleAsync(user, "Admin");
+
         }
     }
 }

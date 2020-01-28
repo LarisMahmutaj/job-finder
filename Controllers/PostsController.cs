@@ -169,7 +169,7 @@ namespace JobFinder.Controllers {
             }
 
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            if (post.UserId != userId) {
+            if (post.UserId != userId && !User.IsInRole("Admin")) {
                 return Forbid();
             }
 

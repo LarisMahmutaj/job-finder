@@ -3,36 +3,67 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using JobFinder.Data;
-using JobFinder.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace JobFinder.Controllers
-{
-    public class UsersController : Controller
-    {
+namespace JobFinder.Controllers {
+    [Authorize(Policy = "RequireAdministratorRole")]
+    public class UsersController : Controller {
+
         private readonly ApplicationDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UsersController(ApplicationDbContext context) {
+        public UsersController(IHttpContextAccessor httpContextAccessor, ApplicationDbContext context) {
             _context = context;
-        }
-        public IActionResult Index()
-        {
-            return View();
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        [HttpGet]
-        public ViewResult Register() {
-            return View();
+        public async Task<IActionResult> Index() {
+            var users = _context.Users;
+            return View(await users.ToListAsync());
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Register([Bind("Id, Email, Username, Password, DateRegistered")] User user) {
-        //    if (ModelState.IsValid) {
-        //        _context.Add(user);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index))
-        //    }
-        //}
+        public async Task<IActionResult> LockoutUser(string id) {
+            if (id == null) {
+                return NotFound();
+            }
+
+            var user = _context.Users.Find(id);
+
+            var date = DateTime.Now.AddMinutes(1);
+
+            user.LockoutEnd = date;
+
+            try {
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+            } catch (DbUpdateConcurrencyException) {
+                throw;
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> UnLockoutUser(string id) {
+            if (id == null) {
+                return NotFound();
+            }
+
+            var user = _context.Users.Find(id);
+
+
+            user.LockoutEnd = null;
+
+            try {
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+            } catch (DbUpdateConcurrencyException) {
+                throw;
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
