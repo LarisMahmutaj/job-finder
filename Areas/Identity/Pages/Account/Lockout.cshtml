@@ -4,7 +4,10 @@
     ViewData["Title"] = "Locked out";
 }
 
-<header>
-    <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">This account has been locked out, please try again later.</p>
-</header>
+    <div class="d-flex justify-content-around p-5 align-items-center">
+        <img style="width:40%;" src="~/images/locked-out.svg" alt="" />
+        <div>
+            <h2 class="font-weight-bold" style="color: #F05D5E">Account Locked Out</h2>
+            <h4 style="color: #F05D5E">This account has been locked out!</h4>
+        </div>
+    </div>
